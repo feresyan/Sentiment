@@ -8,6 +8,9 @@ file = open("Apex-AD2600-Progressive-scan-DVD-player.txt","r")
 process_text = file.read() #Membaca isi file
 ex_text = sent_tokenize(process_text) #Mentokenisasi isi dari variabel process_text
 
+true_words = []
+wrong_words = []
+no_pattern = []
 
 # # --- STOPWORDS ---
 # filtered_sentence = []
@@ -36,25 +39,37 @@ def process_content():
             #     print(subtree)
             for subtree in chunked.subtrees():
                 if subtree.label() == "Rule 1":
+                    true_words.append(str(subtree.leaves()))
                     print("Sentence : " + i)
                     print("Rule 1: " + str(subtree.leaves()))
                     print("")
                 elif  subtree.label() == "Rule 2":
+                    wrong_words.append(str(subtree.leaves()))
                     print("Sentence : " + i)
                     print("Rule 2: " + str(subtree.leaves()))
                     print("")
                 elif  subtree.label() == "Rule 3":
+                    wrong_words.append(str(subtree.leaves()))
                     print("Sentence : " + i)
                     print("Rule 3: " + str(subtree.leaves()))
                     print("")
                 elif  subtree.label() == "Rule 4":
+                    true_words.append(str(subtree.leaves()))
                     print("Sentence : " + i)
                     print("Rule 4: " + str(subtree.leaves()))
                     print("")
                 elif  subtree.label() == "Rule 5":
+                    wrong_words.append(str(subtree.leaves()))
                     print("Sentence : " + i)
                     print("Rule 5: " + str(subtree.leaves()))
                     print("")
+        benar = len(true_words)
+        salah = len(wrong_words)
+        extraction_word = 431
+        Precision = (benar / (benar + salah))*100
+        print("Precision : " "%0.2f" % Precision,"%")
+        Recall = (benar / extraction_word )*100
+        print("Recall : " "%0.2f" % Recall)
     except exception as e:
         print("gagal")
 
