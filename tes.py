@@ -35,14 +35,14 @@ def process_content():
             chunked = chunkParser.parse(tagged)
             for subtree in chunked.subtrees():
                 if subtree.label() == "Rule 1":
-                    cek = []
+                    aspek = []
                     true_words.append(str(subtree.leaves()))
                     print("Sentence : " + i)
                     print("Rule 1: " + str(subtree.leaves()))
                     noun_phrases_list = [' '.join(leaf[0] for leaf in subtree.leaves())
                       for tree in chunkParser.parse(tagged).subtrees()]
-                    cek.append(noun_phrases_list[0])
-                    print(cek)
+                    aspek.append(noun_phrases_list[0])
+                    precision(i,aspek)
                     print("")
                 elif  subtree.label() == "Rule 2":
                     wrong_words.append(str(subtree.leaves()))
@@ -73,5 +73,60 @@ def process_content():
         print("Recall : " "%0.2f" % Recall)
     except exception as e:
         print("gagal")
+
+def precision(i,aspek):
+    kalimat = i
+    hasil = []
+    kata = []
+    str = i
+    for i in range(0, len(str)):
+        if (str[i] == '#'):
+            sen = ''.join(hasil)
+            # text = ''.join([char for char in sen if char.isalpha()])
+            kata.append(sen)
+            break
+            # print(str[i])
+        elif str[i] in ('[' ,'+' ,'-',']','1','2','3'):
+            str.replace("[", "").replace("+", "").replace("-", "").replace("]", "").replace("1","").replace("2","").replace("3","")
+        elif (str[i] != ','):
+            hasil.append(str[i])
+        elif (str[i] == ','):
+            sen = ''.join(hasil)
+            # text = ''.join([char for char in sen if char.isalpha()])
+            kata.append(sen)
+            hasil = []
+
+    print("Aspek sebenarnya : " , kata)
+    print("Aspek yang terekstrasi : " , aspek)
+
+
+    if ( i != kalimat):
+        benar = 0
+        salah = 0
+        if( kata == aspek):
+            benar = benar +1
+            prec = (benar / ( benar + salah))*100
+            print("a")
+            print("Precision : ",prec)
+        else:
+            benar = benar + 0
+            salah = 1
+            prec = (benar / (benar + salah)) * 100
+            print("b")
+            print("Precision : ",prec)
+    else:
+        kalimat = i
+        if ( kata ==  aspek ):
+            benar = benar + 1
+            prec = (benar / (benar + salah)) * 100
+            print("c")
+            print("Precision : ", prec)
+        else:
+            benar = benar + 0
+            salah = 1
+            prec = (benar / (benar + salah)) * 100
+            print("d")
+            print("Precision : ", prec)
+
 
 process_content()
